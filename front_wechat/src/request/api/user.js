@@ -16,7 +16,7 @@ const user = {
   //用户登陆
   userLogin(params) {
     console.log("================user login============")
-    return axios.post('/user/login', qs.stringify(params));
+    return axios.post('/user/login', params);
   }
 };
 

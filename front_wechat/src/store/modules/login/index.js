@@ -2,7 +2,7 @@ import {
     saveLoginStatus,
     loadLoginStatus
   } from '@/utils/cache'
-import user from '@request/api/user'
+import user from '@/request/api/user'
 export default {
     namespaced: true,
     state: {

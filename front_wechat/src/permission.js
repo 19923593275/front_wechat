@@ -5,7 +5,6 @@ import qs from 'qs'
 
 router.beforeEach((to, from, next) => {
     const loginStatus = Number(store.getters.loginStatus)
-    alert("start : " + loginStatus);
     document.title = to.meta.title; 
     if (loginStatus === 0) {
       const url = window.location.href;
@@ -36,20 +35,22 @@ router.beforeEach((to, from, next) => {
       }
       // 同意授权 to.fullPath 携带code参数，拒绝授权没有code参数
       const code = wechatAuth.code
-      alert("code = "+ code);
       if (code) {
         // 拿到code 访问服务端的登录接口
         store
           .dispatch('user/loginWechatAuth', code)
           .then(res => {
             // 成功设置已登录状态
+            console.log("用户登陆返回信息",res);
             store.dispatch('user/setLoginStatus', 2)
             next()
           })
-          .catch(() => {
+          .catch(error => {
+            console.log("error ===== ",error)
             // 失败，设置状态未登录，刷新页面
-            store.dispatch('user/setLoginStatus', 0)
-            location.reload()
+            store.dispatch('user/setLoginStatus', 2)
+            // location.reload()
+            next()
           })
       } else {
         store.dispatch('user/setLoginStatus', 0)

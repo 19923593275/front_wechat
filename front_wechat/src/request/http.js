@@ -31,7 +31,7 @@ instance.interceptors.request.use(
       // const token = store.state.user.token;
       // token && (config.headers.Authorization = token);
       if (config.method === 'post') {
-        config.data = qs.stringify(config.data)
+        config.data = JSON.stringify(config.data)
       }  
       console.log("config===>", config);
       return config;
