@@ -1,18 +1,28 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <van-button type="default">默认按钮</van-button>
+    <van-swipe :autoplay="3000">
+
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img v-lazy="image" />
+      </van-swipe-item>
+    </van-swipe>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import { Button, Swipe, SwipeItem } from 'vant';
 export default {
   name: 'home',
+  data () {
+    return {
+      images: [
+        '../assets/home/home-baner-1.jpg',
+        '../assets/home/home-baner-1.jpg'
+      ]
+    }
+  },
   components: {
-    HelloWorld
   }
 }
 </script>

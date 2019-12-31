@@ -1,12 +1,32 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <van-tabbar v-model="active" route>
+      <van-tabbar-item name="home" replace to="/" :icon="this.active == 'home' ? 'wap-home' : 'home-o'">
+        首页
+      </van-tabbar-item>
+      <van-tabbar-item name="about" replace to="/about" :icon="this.active == 'about' ? 'friends' : 'friends-o'">
+        我的
+      </van-tabbar-item>
+    </van-tabbar>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      active: "home"
+    }
+  },
+  comments: {
+
+  },
+  methods: {
+
+  },
+}
+</script>
 
 <style lang="scss">
 #app {
