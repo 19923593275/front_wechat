@@ -6,8 +6,8 @@ import store from './store'
 Vue.config.productionTip = false
 
 
-import { Button, Tabbar, TabbarItem, Icon, Swipe, SwipeItem, Lazyload} from 'vant'
-Vue.use(Button).use(Tabbar).use(TabbarItem).use(Icon).use(Swipe).use(SwipeItem).use(Lazyload);
+import { Button, Tabbar, TabbarItem, Icon, Swipe, SwipeItem, Lazyload, Toast} from 'vant'
+Vue.use(Button).use(Tabbar).use(TabbarItem).use(Icon).use(Swipe).use(SwipeItem).use(Lazyload).use(Toast);
 
 new Vue({
   router,

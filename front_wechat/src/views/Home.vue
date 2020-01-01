@@ -1,10 +1,8 @@
 <template>
   <div class="home">
-    <van-button type="default">默认按钮</van-button>
     <van-swipe :autoplay="3000">
-
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img v-lazy="image" />
+        <img v-lazy="image" style="width:100%;height:225px;"/>
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -17,8 +15,9 @@ export default {
   data () {
     return {
       images: [
-        '../assets/home/home-baner-1.jpg',
-        '../assets/home/home-baner-1.jpg'
+        require('../assets/home/home-baner-1.jpg'),
+        require('../assets/home/home-baner-2.jpg'),
+        require('../assets/home/home-baner-3.jpg')
       ]
     }
   },

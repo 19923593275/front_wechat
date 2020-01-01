@@ -26,4 +26,17 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  const userInfo = localStorage.getItem("userInfo");
+  next();
+  // if (userInfo == "" || userInfo == null) {
+  //   next({
+  //     path: "/login",
+  //     query: { redirect: to.path }
+  //   });
+  // } else {
+  //   next();
+  // }
+})
+
 export default router
