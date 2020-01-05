@@ -22,6 +22,14 @@ export default {
     }
   },
   components: {
-  }
+  },
+  created() {
+    this.$api.user.userLogin({})
+      .then(res => {
+        console.log(res);
+      }).catch(error => {
+        console.log("submitLoginForm error", error);
+      })
+  },
 }
 </script>

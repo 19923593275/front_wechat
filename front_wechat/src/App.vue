@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <van-tabbar v-model="active" route>
+    <van-tabbar v-model="active" route @change="onChange">
       <van-tabbar-item name="home" replace to="/" :icon="this.active == 'home' ? 'wap-home' : 'home-o'">
         首页
       </van-tabbar-item>
@@ -22,8 +22,13 @@ export default {
   comments: {
 
   },
+  created() {
+    console.log(process.env);
+  },
   methods: {
-
+    onChange(index) {
+      console.log(process.env);
+    }
   },
 }
 </script>

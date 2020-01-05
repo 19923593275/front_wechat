@@ -13,15 +13,10 @@ import qs from "qs";
 //   return axios.post(`${base.sq}/login`, qs.stringify(params));
 // };
 const user = {
-  //用户注册
-  userRegist(params) {
-    console.log("用户注册", axios);
-    return axios.post(`${base.sq}/regist`, params);
-    // axios.post(`${base.sq}/regist`, params);
-  },
   //用户登陆
   userLogin(params) {
-    return axios.post(`${base.sq}/login`, qs.stringify(params));
+    console.log("================user login============")
+    return axios.post('/user/login', qs.stringify(params));
   }
 };
 

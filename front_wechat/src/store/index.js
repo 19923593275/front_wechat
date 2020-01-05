@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import getters from './getters'
 import user from '../store/modules/login'
 import common from '../store/modules/common'
 
@@ -9,5 +10,6 @@ export default new Vuex.Store({
   modules: {
     user,
     common
-  }
+  },
+  getters
 });

@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/index.js'
+import api from './request/api'
+import wechatAuth from './plugins/wechatAuth'
 
+Vue.use(wechatAuth, {
+  appid: process.env.VUE_APP_WECHAT_APPID
+})
+Vue.prototype.$api = api
 Vue.config.productionTip = false
 
 

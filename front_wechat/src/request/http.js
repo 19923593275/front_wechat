@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios'
-import QS from 'qs'
+import qs from 'qs'
 import { Toast } from 'vant'
 
 /**
@@ -17,9 +17,10 @@ const tip = msg => {
 }
 
 //创建axios实例
-var instance = axios.create({ timeout: 1000});
+var instance = axios.create({ timeout: 3000});
 //设置post请求头
-instance.defaults.headers.post["Content-Type"] = "application/json";
+instance.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
+instance.defaults.baseURL = '/api'
 
 /**
  * 请求拦截器
@@ -27,8 +28,11 @@ instance.defaults.headers.post["Content-Type"] = "application/json";
  */
 instance.interceptors.request.use(
     config => {
-      const token = store.state.user.token;
-      token && (config.headers.Authorization = token);
+      // const token = store.state.user.token;
+      // token && (config.headers.Authorization = token);
+      if (config.method === 'post') {
+        config.data = qs.stringify(config.data)
+      }  
       console.log("config===>", config);
       return config;
     },
