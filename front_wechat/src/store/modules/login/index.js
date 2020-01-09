@@ -11,6 +11,7 @@ export default {
     },
     actions: {
         setLoginStatus({commit}, query) {
+            alert("setLogin : " + query);
             commit('SET_LOGIN_STATUS', query)
         }
     }
