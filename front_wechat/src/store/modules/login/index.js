@@ -1,8 +1,13 @@
+import {
+    saveLoginStatus,
+    loadLoginStatus
+  } from '@/utils/cache'
+
 export default {
     namespaced: true,
     state: {
         token: true,
-        loginStatus: 0
+        loginStatus: loadLoginStatus()
     },
     mutations: {
         SET_LOGIN_STATUS: (state, loginStatus) => {
@@ -11,8 +16,7 @@ export default {
     },
     actions: {
         setLoginStatus({commit}, query) {
-            alert("setLogin : " + query);
-            commit('SET_LOGIN_STATUS', query)
+            commit('SET_LOGIN_STATUS', saveLoginStatus(query))
         }
     }
 }

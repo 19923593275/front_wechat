@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store/index.js'
 import api from './request/api'
+import '@/permission'
 import wechatAuth from './plugins/wechatAuth'
 
 Vue.use(wechatAuth, {
