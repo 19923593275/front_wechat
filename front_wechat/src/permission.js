@@ -6,18 +6,7 @@ import qs from 'qs'
 router.beforeEach((to, from, next) => {
     const loginStatus = Number(store.getters.loginStatus)
     alert("start : " + loginStatus);
-    console.log(loginStatus + "-----------", to.meta.title)
     document.title = to.meta.title; 
-    // if (loginStatus === 0) {
-    //   store.commit('user/SET_LOGIN_STATUS', 1);
-    //   alert(Number(store.getters.loginStatus))
-    //   window.location.href = window.location.href
-    // } else if (loginStatus ===1) {
-    //   store.commit('user/SET_LOGIN_STATUS', 2);
-    //   window.location.href = window.location.href
-    // } else {
-    //   next();
-    // }
     if (loginStatus === 0) {
       const url = window.location.href;
       const parseUrl = qs.parse(url.split('?')[1]);
@@ -50,21 +39,18 @@ router.beforeEach((to, from, next) => {
       alert("code = "+ code);
       if (code) {
         // 拿到code 访问服务端的登录接口
-        store.dispatch('user/setLoginStatus', 2);
-        // store.commit('user/SET_LOGIN_STATUS', 2);
-        next();
-        // store
-        //   .dispatch('user/loginWechatAuth', code)
-        //   .then(res => {
-        //     // 成功设置已登录状态
-        //     store.dispatch('user/setLoginStatus', 2)
-        //     next()
-        //   })
-        //   .catch(() => {
-        //     // 失败，设置状态未登录，刷新页面
-        //     store.dispatch('user/setLoginStatus', 0)
-        //     location.reload()
-        //   })
+        store
+          .dispatch('user/loginWechatAuth', code)
+          .then(res => {
+            // 成功设置已登录状态
+            store.dispatch('user/setLoginStatus', 2)
+            next()
+          })
+          .catch(() => {
+            // 失败，设置状态未登录，刷新页面
+            store.dispatch('user/setLoginStatus', 0)
+            location.reload()
+          })
       } else {
         store.dispatch('user/setLoginStatus', 0)
         // store.commit('user/SET_LOGIN_STATUS', 0);
