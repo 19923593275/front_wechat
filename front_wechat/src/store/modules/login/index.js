@@ -7,7 +7,8 @@ export default {
     namespaced: true,
     state: {
         token: true,
-        loginStatus: loadLoginStatus()
+        loginStatus: loadLoginStatus(),
+        userInfo: {}
     },
     mutations: {
         SET_LOGIN_STATUS: (state, loginStatus) => {

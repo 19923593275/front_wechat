@@ -30,9 +30,9 @@ instance.interceptors.request.use(
     config => {
       // const token = store.state.user.token;
       // token && (config.headers.Authorization = token);
-      if (config.method === 'post') {
-        config.data = JSON.stringify(config.data)
-      }  
+      // if (config.method === 'post') {
+      //   config.data = JSON.stringify(config.data)
+      // }  
       console.log("config===>", config);
       return config;
     },
