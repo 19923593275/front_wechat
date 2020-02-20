@@ -2,6 +2,10 @@ import router from './router'
 import store from './store'
 import wechatAuth from './plugins/wechatAuth'
 import qs from 'qs'
+import {
+  saveUserInfo,
+  removeUserInfo
+} from './utils/cache'
 
 router.beforeEach((to, from, next) => {
     const loginStatus = Number(store.getters.loginStatus)
@@ -42,7 +46,17 @@ router.beforeEach((to, from, next) => {
           .then(res => {
             // 成功设置已登录状态
             console.log("用户登陆返回信息",res);
-            store.dispatch('user/setLoginStatus', 2)
+            store.dispatch('user/setLoginStatus', 2);
+            if (res.status == 200) {
+              const data = res.data;
+              if (data.stateCode == 0) {
+                store.dispatch('user/setUserInfo', data.data);
+                saveUserInfo(data.data);
+              } else {
+                store.dispatch('user/setUserInfo', {});
+                removeUserInfo();
+              }
+            }
             next()
           })
           .catch(error => {

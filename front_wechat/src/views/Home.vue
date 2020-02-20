@@ -37,6 +37,7 @@ export default {
   methods: {
     getLogStatus() {
       alert(Number(this.$store.getters.loginStatus));
+      console.log(this.$store.state.user.userInfo)
     },
     addLogSatus() {
       this.age++;

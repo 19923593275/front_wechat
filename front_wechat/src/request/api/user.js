@@ -17,6 +17,16 @@ const user = {
   userLogin(params) {
     console.log("================user login============")
     return axios.post('/user/login', params);
+  },
+  //发送验证码
+  sendCode(params) {
+    console.log("================sendCode============")
+    return axios.post('/user/send-code', params)
+  },
+  //用户绑定手机号码
+  bindPhone(params) {
+    console.log("================bindPhone============")
+    return axios.post('/user/bind-phone', params)
   }
 };
 

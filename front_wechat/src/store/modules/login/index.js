@@ -13,6 +13,9 @@ export default {
     mutations: {
         SET_LOGIN_STATUS: (state, loginStatus) => {
             state.loginStatus = loginStatus
+        },
+        SET_USERINFO: (state, user) => {
+            state.userInfo = user
         }
     },
     actions: {
@@ -29,10 +32,13 @@ export default {
                         //用户信息，token
                         resolve(res);
                     })
-                    .catch(eror => {
+                    .catch(error => {
                         reject(error);
                     })
             })
+        },
+        setUserInfo({commit}, user) {
+            commit('SET_USERINFO', user)
         }
     }
 }
