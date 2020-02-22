@@ -67,6 +67,14 @@ const routes = [
       title: '服务协议'
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/about/Service.vue')
+  },
+  {
+    path: '/music-index',
+    name: 'music-index',
+    meta:{
+      title: '我的音乐'
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/about/MusicIndex.vue')
   }
 ]
 

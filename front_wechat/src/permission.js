@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
           .catch(error => {
             console.log("error ===== ",error)
             // 失败，设置状态未登录，刷新页面
-            store.dispatch('user/setLoginStatus', 2)
+            store.dispatch('user/setLoginStatus', 0)
             // location.reload()
             next()
           })

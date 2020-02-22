@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import {Field, Cell, CellGroup, Toast} from 'vant';
+    import {Field, Cell, CellGroup, Toast, Notify} from 'vant';
     import user from '@/request/api/user';
     import {saveUserInfo, getUserInfo} from '@/utils/cache'
     export default {
@@ -86,12 +86,11 @@
                         if (res.status == 200) {
                             let {stateCode, data:code, message} = res.data;
                             if (stateCode == 0) {
-                                this.$toast({
-                                    type: 'text',
-                                    position: 'top',
+                                this.$notify({
+                                    type: 'success',
                                     message: '验证码:' + code,
-                                    duration: 0
-                                });
+                                    duration: 10000
+                                })
                             } else {
                                 this.$toast.fail(message);
                             }
@@ -108,6 +107,7 @@
             },
             sumbitForm() {
                 console.log(this.phone,this.valicode)
+                this.$notify.clear();
                 const data = {
                     serviceType: '1000',
                     phone: this.phone,
@@ -123,7 +123,7 @@
                                 let user = getUserInfo();
                                 user.user_tel = phoneNum;
                                 saveUserInfo(user);
-                                this.$router.replace('/about');
+                                this.$router.push('/about');
                             } else {
                                 this.$toast.fail(message);
                             }

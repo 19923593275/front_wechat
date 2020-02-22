@@ -21,7 +21,7 @@
     <div class="my-info">
       <van-row>
         <van-col span="6">
-          <card v-bind:card="card1"></card>
+          <card v-bind:card="card1" @click.native="jumpUrl('music-index')"></card>
         </van-col>
         <van-col span="6">
           <card v-bind:card="card2"></card>
@@ -127,7 +127,7 @@ export default {
       if (user.user_tel != 0 && user.user_tel != null) {
         this.isPhone = true;
       }
-      return getUserInfo();
+      return user;
     }
   },
   methods: {
@@ -140,7 +140,7 @@ export default {
         this.$toast.fail('绑定手机后才能参与游戏!');
         return;
       }
-      this.$router.replace(`/${url}`);
+      this.$router.push(`/${url}`);
     }
   }
 }

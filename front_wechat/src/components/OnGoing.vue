@@ -26,5 +26,6 @@
         height: 15rem;
         display: flex;
         align-items: center;
+        background-color: #fff;
     }
 </style>

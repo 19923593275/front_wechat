@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1重庆周星星" /> -->
-    <van-tabbar v-model="active" route @change="onChange">
+    <van-tabbar v-show="$route.name== 'home' || $route.name== 'about'" v-model="active" route @change="onChange">
       <van-tabbar-item name="home" replace to="/" :icon="this.active == 'home' ? 'wap-home' : 'home-o'">
         首页
       </van-tabbar-item>
@@ -43,6 +43,9 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+html, body {
+  background-color: #f8f8f8;
+}
 
 html, body, div, applet, object, iframe, span,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -60,7 +63,6 @@ time, mark, audio, video, input{
   margin: 0;
   padding: 0;
   border: none;
-  background: none;
   font-weight: normal;
   box-sizing: border-box;
 }

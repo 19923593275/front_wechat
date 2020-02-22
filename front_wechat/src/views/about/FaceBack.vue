@@ -46,7 +46,7 @@
                 Toast.loading('提交成功...');
                 setTimeout(() => {  
                     Toast.clear();
-                    this.$router.replace('/about');
+                    this.$router.push('/about');
                 }, 1000);
             }
         }
@@ -62,7 +62,7 @@
         }
         .back-info {
             padding: 0.1rem;
-            background: #f7f7f7;
+            background: #fff;
         }
         .start {
             font-size: 0.35rem;
@@ -75,7 +75,7 @@
         }
         .lx-way {
             font-size: 0;
-            background: #f7f7f7;
+            background: #fff;
             padding: 0.2rem;
             text-align: left;
             margin-top: 0.2rem;
