@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1重庆周星星" /> -->
+    <!-- ./iconfont <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1重庆周星星" /> -->
     <van-tabbar v-show="$route.name== 'home' || $route.name== 'about'" v-model="active" route @change="onChange">
       <van-tabbar-item name="home" replace to="/" :icon="this.active == 'home' ? 'wap-home' : 'home-o'">
         首页
@@ -21,7 +21,7 @@ export default {
     }
   },
   comments: {
-
+    
   },
   created() {
     console.log(this.$route);

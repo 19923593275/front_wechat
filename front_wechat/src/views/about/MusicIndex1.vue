@@ -6,11 +6,11 @@
             </div>
             <div class="user-flex-right">
                 <p>{{this.userInfo.nick_name}}</p>
-                <audio style="" id="myAudio" src=""></audio>
             </div>
         </div>
         <music-player v-bind:musicList="musicList"></music-player>
         <div class="music-player">
+            <audio id="myAudio" :src="this.indexPlayer.music_url"></audio>
             <div style="flex:2;">
                 <van-image style="position: absolute;left: 0.1rem;bottom: 0.1rem;width:1rem;height:1rem;" round fit="cover" :src="this.indexPlayer.singer_img_url"></van-image>
             </div>
@@ -100,8 +100,7 @@
                 },
                 btnStyle: 'font-size:0.7rem;color:#05bb05;',
                 bfFlag: 'font-size:0.7rem;color:#05bb05;',
-                ztFlag: 'font-size:0.7rem;color:#05bb05;display:none;',
-                isFirst: true
+                ztFlag: 'font-size:0.7rem;color:#05bb05;display:none;'
             }
         },
         created() {
@@ -188,11 +187,36 @@
             this.musicList = this.musicData.tj;
             console.log("初始化musicList = ", this.musicList);
             this.indexPlayer = this.musicData.tj[0];
-            
             this.likeSum = this.musicData.like.length;
-        },
-        destroyed() {
-            this.$toast.clear();
+            const data = {
+                url: location.href.split('#')[0]
+            };
+            user.getWxConfig(data)
+                .then(res => {
+                    console.log("jssdk验证消息", res);
+                    if (res.status != 200) {
+                        this.$toast.fail('验证jssdk异常');
+                        return;
+                    }
+                    if (res.data.stateCode != 0) {
+                        this.$toast.fail(res.data.message);
+                        return;
+                    }
+                    let {appId, noncestr, signature, timestamp} = res.data.data;
+                    console.log("=====",appId,noncestr,signature,timestamp)
+                    wx.config({
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: appId, // 必填，公众号的唯一标识
+                        timestamp: timestamp, // 必填，生成签名的时间戳
+                        nonceStr: noncestr, // 必填，生成签名的随机串
+                        signature: signature,// 必填，签名
+                        jsApiList: ['playVoice'] // 必填，需要使用的JS接口列表
+                    });
+                })
+                .catch(error => {
+                    console.log("验证jssdk异常",error);
+                    this.$toast.fail('验证jssdk异常');
+                })
         },
         computed: {
             userInfo() {
@@ -204,7 +228,7 @@
             let _this = this;
             let $audio = document.getElementById("myAudio");//获取音乐DOM节点
             console.log($audio);
-            $audio.src = _this.indexPlayer.music_url;
+            // console.log($audio);
             $audio.addEventListener("playing", function(){
                     console.log("监听播放状态")
                     _this.$toast.clear();
@@ -223,73 +247,35 @@
             $audio.addEventListener("ended", function(){ 
                     _this.handleSong(4, true);
             });
-
-            const data = {
-                url: location.href.split('#')[0]
-            };
-            user.getWxConfig(data)
-                .then(res => {
-                    console.log("jssdk验证消息", res);
-                    if (res.status != 200) {
-                        this.$toast.fail('验证jssdk异常');
-                        return;
-                    }
-                    if (res.data.stateCode != 0) {
-                        this.$toast.fail(res.data.message);
-                        return;
-                    }
-                    let {appId, noncestr, signature, timestamp} = res.data.data;
-                    wx.config({
-                        debug: true,
-                        appId: appId, // 必填，公众号的唯一标识
-                        timestamp: timestamp, // 必填，生成签名的时间戳，精确到秒
-                        nonceStr: noncestr, // 必填，生成签名的随机串
-                        signature: signature, // 必填，签名
-                        jsApiList: ['scanQRCode']
-                    })
-                })
-                .catch(error => {
-                    console.log("验证jssdk异常",error);
-                    this.$toast.fail('验证jssdk异常');
-                })
         },
         methods: {
             refreshSongData() {
 
             },
             onChange (index) {
-                let audio = document.getElementById("myAudio");
                 switch(index) {
                     case 0:
                         this.musicList = this.musicData.tj;
                         if (!this.playerState && this.musicData.tj.length > 0) {
                             this.indexPlayer = this.musicData.tj[0];
-                            audio.src = this.indexPlayer.music_url;
-                            this.isFirst = false;
                         }
                         break;
                     case 1:
                         this.musicList = this.musicData.phb;
                         if (!this.playerState && this.musicData.phb.length > 0) {
                             this.indexPlayer = this.musicData.phb[0];
-                            audio.src = this.indexPlayer.music_url;
-                            this.isFirst = false;
                         }
                         break;
                     case 2:
                         this.musicList = this.musicData.like;
                         if (!this.playerState && this.musicData.like.length > 0) {
                             this.indexPlayer = this.musicData.like[0];
-                            audio.src = this.indexPlayer.music_url;
-                            this.isFirst = false;
                         }
                         break;
                     default:
                         this.musicList = this.musicData.tj;
                         if (!this.playerState && this.musicData.tj.length > 0) {
                             this.indexPlayer = this.musicData.tj[0];
-                            audio.src = this.indexPlayer.music_url;
-                            this.isFirst = false;
                         }
                 }
             },
@@ -303,11 +289,9 @@
                         if (length > 1) {
                             if (xh == 0) {
                                 this.indexPlayer = this.musicList[length-1];
-                                myAudio.src = this.indexPlayer.music_url;
                                 this.playAudio(false);
                             } else {
                                 this.indexPlayer = this.musicList[xh-1];
-                                myAudio.src = this.indexPlayer.music_url;
                                 this.playAudio(false);
                             }
                         }
@@ -316,19 +300,17 @@
                         this.pauseAudio();
                         break;
                     case 3:
-                        this.playAudioBtn();
+                        this.playAudio(true);
                         break;
                     case 4:
                         if (length > 1) {
                             if (xh == length-1) {
                                 if (!isFlag) {
                                     this.indexPlayer = this.musicList[0];
-                                    myAudio.src = this.indexPlayer.music_url;
                                     this.playAudio(false);
                                 }
                             } else {
                                 this.indexPlayer = this.musicList[xh+1];
-                                myAudio.src = this.indexPlayer.music_url;
                                 this.playAudio(false);
                             }
                         }
@@ -338,52 +320,19 @@
 
                 }
             },
-            playAudioBtn() {
-                let myAudio = document.getElementById("myAudio");
-                if(this.isFirst) {
-                    this.$toast.loading({
-                        message: '加载中...',
-                        forbidClick: true,
-                        overlay: true,
-                        duration: 0
-                    })
-                }
-                if (this.isFirst) {
-                    myAudio.load();
-                    this.isFirst = false;
-                    myAudio.oncanplaythrough = function() {
-                        myAudio.play();
-                    }
-                } else {
-                    myAudio.play();
-                    this.isFirst = false;
-                }
-            },
             playAudio(flag) {
                 let myAudio = document.getElementById("myAudio");
-                this.$toast.loading({
-                    message: '加载中...',
-                    forbidClick: true,
-                    overlay: true,
-                    duration: 0
-                })
+                
                 if (flag) {
-                    this.isFirst = false;
-                    if (this.isFirst) {
-                        myAudio.load();
-                        myAudio.oncanplaythrough = function() {
-                            myAudio.play();
-                        }
-                    } else {
+                    wx.ready(() => {
                         myAudio.play();
-                    }
-                    
+                    })
+                    myAudio.play();
                 } else {
                     myAudio.load();
-                    myAudio.oncanplaythrough = function() {
+                    wx.ready(() => {
                         myAudio.play();
-                        this.isFirst = false;
-                    }
+                    })
                 }
             },
             pauseAudio() {
@@ -393,9 +342,6 @@
                 // this.ztFlag = 'font-size:0.7rem;color:#05bb05;display:none;';
             },
             getIndexMusicList() {
-                if (!this.playerState) {
-                    return this.musicList;
-                }
                 if (this.active == 0) {
                     return this.musicData.tj;
                 } else if (this.active == 1) {
