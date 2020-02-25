@@ -27,6 +27,11 @@ const user = {
   bindPhone(params) {
     console.log("================bindPhone============")
     return axios.post('/user/bind-phone', params)
+  },
+  //获取微信JSSDK验证
+  getWxConfig(params) {
+    console.log("================bindPhone============")
+    return axios.post('/user/get-wxconfig', params)
   }
 };
 
