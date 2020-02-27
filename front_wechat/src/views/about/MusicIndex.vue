@@ -9,13 +9,13 @@
                 <audio style="" id="myAudio" src=""></audio>
             </div>
         </div>
-        <music-player v-bind:musicList="musicList"></music-player>
+        <music-player v-bind:playerData="this.childData" v-on:listenChildPlayler="operaPlalerFromChild"></music-player>
         <div class="music-player">
             <div style="flex:2;">
-                <van-image style="position: absolute;left: 0.1rem;bottom: 0.1rem;width:1rem;height:1rem;" round fit="cover" :src="this.indexPlayer.singer_img_url"></van-image>
+                <van-image style="position: absolute;left: 0.1rem;bottom: 0.1rem;width:1rem;height:1rem;" round fit="cover" :src="this.childData.indexPlayer.singer_img_url"></van-image>
             </div>
             <div style="flex:6;">
-                <p class="specel-text common-text">{{`${this.indexPlayer.music_name}-${this.indexPlayer.singer}`}}</p>
+                <p class="specel-text common-text">{{`${this.childData.indexPlayer.music_name}-${this.childData.indexPlayer.singer}`}}</p>
             </div>
             <div style="flex:3;">
                 <p style="width:1.875rem" class="common-text">
@@ -75,24 +75,28 @@
         data() {
             return {
                 active: 0,// 0:推荐,1:排行榜,2:喜欢
-                playerState: false,
-                indexPlayer: {
-                    id: '',
-                    music_name: '',
-                    music_url: '',
-                    singer: '',
-                    singer_img_url: '',
-                    is_chosen: '',
-                    like_sum: '',
-                    comment_sum: '',
-                    xh:0
+                childData: {
+                    active: 0,
+                    indexActive: 0,
+                    playerState: false,
+                    indexPlayer: {
+                        id: '',
+                        music_name: '',
+                        music_url: '',
+                        singer: '',
+                        singer_img_url: '',
+                        is_chosen: '',
+                        like_sum: '',
+                        comment_sum: '',
+                        xh:0
+                    },
+                    musicList: []
                 },
                 musicData: {
                     tj: [],
                     phb: [],
                     like: []
                 },
-                musicList: [],
                 likeSum: 0,
                 icon: {
                     active: phb2,
@@ -107,87 +111,329 @@
         created() {
             this.musicData = {
                 tj: [{
-                        id: 1,
-                        music_name: '烦恼歌',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E7%83%A6%E6%81%BC%E6%AD%8C.mp3',
-                        singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
+                        id: 2,
+                        music_name: '左右为难',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%B7%A6%E5%8F%B3%E4%B8%BA%E9%9A%BE.mp3',
+                        singer: '张学友/郑中基',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/zywn.jpg',
                         is_chosen: 1,
-                        like_sum: 13,
+                        like_sum: 98,
                         comment_sum: 12,
                         xh:0
                     },
                     {
-                        id: 2,
-                        music_name: '吻别',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%90%BB%E5%88%AB.mp3',
-                        singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                        is_chosen: 0,
-                        like_sum: 11,
+                        id: 3,
+                        music_name: '世界这么大还是遇见你',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%96%E7%95%8C%E8%BF%99%E4%B9%88%E5%A4%A7%E8%BF%98%E6%98%AF%E9%81%87%E8%A7%81%E4%BD%A0.mp3',
+                        singer: '程响',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/sjzmdhsyjn.jpg',
+                        is_chosen: 1,
+                        like_sum: 97,
                         comment_sum: 12,
                         xh:1
                     },
                     {
-                        id: 3,
-                        music_name: '一千个伤心的理由',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%80%E5%8D%83%E4%B8%AA%E4%BC%A4%E5%BF%83%E7%9A%84%E7%90%86%E7%94%B1.mp3',
-                        singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                        is_chosen: 0,
-                        like_sum: 9,
+                        id: 4,
+                        music_name: '你是如此难以忘记(电台版)',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%BD%A0%E6%98%AF%E5%A6%82%E6%AD%A4%E9%9A%BE%E4%BB%A5%E5%BF%98%E8%AE%B0.mp3',
+                        singer: '张智霖',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/nsrcnywj.jpg',
+                        is_chosen: 1,
+                        like_sum: 96,
                         comment_sum: 12,
                         xh:2
+                    },
+                    {
+                        id: 5,
+                        music_name: '夜曲',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%A4%9C%E6%9B%B2.mp3',
+                        singer: '周杰伦',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/yq.jpg',
+                        is_chosen: 1,
+                        like_sum: 95,
+                        comment_sum: 12,
+                        xh:3
+                    },
+                    {
+                        id: 6,
+                        music_name: '红色高跟鞋',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E7%BA%A2%E8%89%B2%E9%AB%98%E8%B7%9F%E9%9E%8B.mp3',
+                        singer: '蔡健雅',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/hsggx.jpg',
+                        is_chosen: 1,
+                        like_sum: 94,
+                        comment_sum: 12,
+                        xh:4
+                    },
+                    {
+                        id: 8,
+                        music_name: '情人知己',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E6%83%85%E4%BA%BA%E7%9F%A5%E5%B7%B1.mp3',
+                        singer: '叶倩文',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/qrzj.jpg',
+                        is_chosen: 1,
+                        like_sum: 92,
+                        comment_sum: 12,
+                        xh:5
+                    },
+                    {
+                        id: 9,
+                        music_name: 'そばにいるね',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E3%81%9D%E3%81%B0%E3%81%AB%E3%81%84%E3%82%8B%E3%81%AD.mp3',
+                        singer: '青山黛玛',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/lzwsb.jpg',
+                        is_chosen: 1,
+                        like_sum: 91,
+                        comment_sum: 12,
+                        xh:6
                     }],
                 phb:[{
                         id: 1,
-                        music_name: '烦恼歌',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E7%83%A6%E6%81%BC%E6%AD%8C.mp3',
+                        music_name: '一千个伤心的理由',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%80%E5%8D%83%E4%B8%AA%E4%BC%A4%E5%BF%83%E7%9A%84%E7%90%86%E7%94%B1.mp3',
                         singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/yqgsxdly.jpg',
                         is_chosen: 1,
-                        like_sum: 13,
+                        like_sum: 99,
                         comment_sum: 12,
                         xh:0
                     },
                     {
                         id: 2,
-                        music_name: '吻别',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%90%BB%E5%88%AB.mp3',
-                        singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                        is_chosen: 0,
-                        like_sum: 11,
+                        music_name: '左右为难',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%B7%A6%E5%8F%B3%E4%B8%BA%E9%9A%BE.mp3',
+                        singer: '张学友/郑中基',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/zywn.jpg',
+                        is_chosen: 1,
+                        like_sum: 98,
                         comment_sum: 12,
                         xh:1
                     },
                     {
                         id: 3,
-                        music_name: '一千个伤心的理由',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%80%E5%8D%83%E4%B8%AA%E4%BC%A4%E5%BF%83%E7%9A%84%E7%90%86%E7%94%B1.mp3',
-                        singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                        is_chosen: 0,
-                        like_sum: 9,
+                        music_name: '世界这么大还是遇见你',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%96%E7%95%8C%E8%BF%99%E4%B9%88%E5%A4%A7%E8%BF%98%E6%98%AF%E9%81%87%E8%A7%81%E4%BD%A0.mp3',
+                        singer: '程响',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/sjzmdhsyjn.jpg',
+                        is_chosen: 1,
+                        like_sum: 97,
                         comment_sum: 12,
                         xh:2
+                    },
+                    {
+                        id: 4,
+                        music_name: '你是如此难以忘记(电台版)',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%BD%A0%E6%98%AF%E5%A6%82%E6%AD%A4%E9%9A%BE%E4%BB%A5%E5%BF%98%E8%AE%B0.mp3',
+                        singer: '张智霖',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/nsrcnywj.jpg',
+                        is_chosen: 1,
+                        like_sum: 96,
+                        comment_sum: 12,
+                        xh:3
+                    },
+                    {
+                        id: 5,
+                        music_name: '夜曲',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%A4%9C%E6%9B%B2.mp3',
+                        singer: '周杰伦',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/yq.jpg',
+                        is_chosen: 1,
+                        like_sum: 95,
+                        comment_sum: 12,
+                        xh:4
+                    },
+                    {
+                        id: 6,
+                        music_name: '红色高跟鞋',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E7%BA%A2%E8%89%B2%E9%AB%98%E8%B7%9F%E9%9E%8B.mp3',
+                        singer: '蔡健雅',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/hsggx.jpg',
+                        is_chosen: 1,
+                        like_sum: 94,
+                        comment_sum: 12,
+                        xh:5
+                    },
+                    {
+                        id: 7,
+                        music_name: '当年情',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%BD%93%E5%B9%B4%E6%83%85.mp3',
+                        singer: '张国荣',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/dnq.jpg',
+                        is_chosen: 1,
+                        like_sum: 93,
+                        comment_sum: 12,
+                        xh:6
+                    },
+                    {
+                        id: 8,
+                        music_name: '情人知己',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E6%83%85%E4%BA%BA%E7%9F%A5%E5%B7%B1.mp3',
+                        singer: '叶倩文',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/qrzj.jpg',
+                        is_chosen: 1,
+                        like_sum: 92,
+                        comment_sum: 12,
+                        xh:7
+                    },
+                    {
+                        id: 9,
+                        music_name: 'そばにいるね',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E3%81%9D%E3%81%B0%E3%81%AB%E3%81%84%E3%82%8B%E3%81%AD.mp3',
+                        singer: '青山黛玛',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/lzwsb.jpg',
+                        is_chosen: 1,
+                        like_sum: 91,
+                        comment_sum: 12,
+                        xh:8
+                    },
+                    {
+                        id: 10,
+                        music_name: '我的秘密',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E6%88%91%E7%9A%84%E7%A7%98%E5%AF%86.mp3',
+                        singer: '邓紫棋',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/wdmm.png',
+                        is_chosen: 1,
+                        like_sum: 90,
+                        comment_sum: 12,
+                        xh:9
+                    },
+                    {
+                        id: 11,
+                        music_name: '谁伴我闯荡',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E8%B0%81%E4%BC%B4%E6%88%91%E9%97%AF%E8%8D%A1.mp3',
+                        singer: 'Beyond',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/sbwcd.jpg',
+                        is_chosen: 1,
+                        like_sum: 89,
+                        comment_sum: 12,
+                        xh:10
+                    },
+                    {
+                        id: 12,
+                        music_name: '世界が終るまでは…',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%96%E7%95%8C%E3%81%8C%E7%B5%82%E3%82%8B%E3%81%BE%E3%81%A7%E3%81%AF%E2%80%A6.mp3',
+                        singer: '上杉升（WANDS）',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/zdsjzj.jpg',
+                        is_chosen: 1,
+                        like_sum: 88,
+                        comment_sum: 12,
+                        xh:11
+                    },
+                    {
+                        id: 13,
+                        music_name: '那些你很冒险的梦',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E9%82%A3%E4%BA%9B%E4%BD%A0%E5%BE%88%E5%86%92%E9%99%A9%E7%9A%84%E6%A2%A6.mp3',
+                        singer: '林俊杰',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/nxnhmxdm.jpg',
+                        is_chosen: 1,
+                        like_sum: 87,
+                        comment_sum: 12,
+                        xh:12
+                    },
+                    {
+                        id: 14,
+                        music_name: 'Timber',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/Timber.mp3',
+                        singer: 'Ke$ha',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/timber.jpg',
+                        is_chosen: 1,
+                        like_sum: 86,
+                        comment_sum: 12,
+                        xh:13
+                    },
+                    {
+                        id: 15,
+                        music_name: '烦恼歌',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E7%83%A6%E6%81%BC%E6%AD%8C.mp3',
+                        singer: '张学友',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/fng.jpg',
+                        is_chosen: 1,
+                        like_sum: 85,
+                        comment_sum: 12,
+                        xh:14
+                    },
+                    {
+                        id: 16,
+                        music_name: '吻别',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%90%BB%E5%88%AB.mp3',
+                        singer: '张学友',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/wenbie.jpg',
+                        is_chosen: 1,
+                        like_sum: 84,
+                        comment_sum: 12,
+                        xh:15
                     }],
                 like:[{
-                        id: 3,
-                        music_name: '一千个伤心的理由',
-                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%80%E5%8D%83%E4%B8%AA%E4%BC%A4%E5%BF%83%E7%9A%84%E7%90%86%E7%94%B1.mp3',
-                        singer: '张学友',
-                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                        is_chosen: 0,
-                        like_sum: 9,
+                        id: 2,
+                        music_name: '左右为难',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%B7%A6%E5%8F%B3%E4%B8%BA%E9%9A%BE.mp3',
+                        singer: '张学友/郑中基',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/zywn.jpg',
+                        is_chosen: 1,
+                        like_sum: 98,
                         comment_sum: 12,
                         xh:0
+                    },
+                    {
+                        id: 3,
+                        music_name: '世界这么大还是遇见你',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%B8%96%E7%95%8C%E8%BF%99%E4%B9%88%E5%A4%A7%E8%BF%98%E6%98%AF%E9%81%87%E8%A7%81%E4%BD%A0.mp3',
+                        singer: '程响',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/sjzmdhsyjn.jpg',
+                        is_chosen: 1,
+                        like_sum: 97,
+                        comment_sum: 12,
+                        xh:1
+                    },
+                    {
+                        id: 4,
+                        music_name: '你是如此难以忘记(电台版)',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E4%BD%A0%E6%98%AF%E5%A6%82%E6%AD%A4%E9%9A%BE%E4%BB%A5%E5%BF%98%E8%AE%B0.mp3',
+                        singer: '张智霖',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/nsrcnywj.jpg',
+                        is_chosen: 1,
+                        like_sum: 96,
+                        comment_sum: 12,
+                        xh:2
+                    },
+                    {
+                        id: 5,
+                        music_name: '夜曲',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E5%A4%9C%E6%9B%B2.mp3',
+                        singer: '周杰伦',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/yq.jpg',
+                        is_chosen: 1,
+                        like_sum: 95,
+                        comment_sum: 12,
+                        xh:3
+                    },
+                    {
+                        id: 8,
+                        music_name: '情人知己',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E6%83%85%E4%BA%BA%E7%9F%A5%E5%B7%B1.mp3',
+                        singer: '叶倩文',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/qrzj.jpg',
+                        is_chosen: 1,
+                        like_sum: 92,
+                        comment_sum: 12,
+                        xh:4
+                    },
+                    {
+                        id: 9,
+                        music_name: 'そばにいるね',
+                        music_url: 'http://www.zxx9527.cn/wechat/static/songs/%E3%81%9D%E3%81%B0%E3%81%AB%E3%81%84%E3%82%8B%E3%81%AD.mp3',
+                        singer: '青山黛玛',
+                        singer_img_url: 'http://zxx9527.cn/wechat/static/img/songs/lzwsb.jpg',
+                        is_chosen: 1,
+                        like_sum: 91,
+                        comment_sum: 12,
+                        xh:5
                     }]
             };
             console.log("musicData ========",this.musicData);
-            this.musicList = this.musicData.tj;
-            console.log("初始化musicList = ", this.musicList);
-            this.indexPlayer = this.musicData.tj[0];
+            this.childData.musicList = this.musicData.tj;
+            console.log("初始化musicList = ", this.childData.musicList);
+            this.childData.indexPlayer = this.musicData.tj[0];
             
             this.likeSum = this.musicData.like.length;
         },
@@ -203,22 +449,23 @@
         mounted() {
             let _this = this;
             let $audio = document.getElementById("myAudio");//获取音乐DOM节点
-            console.log($audio);
-            $audio.src = _this.indexPlayer.music_url;
+            $audio.src = _this.childData.indexPlayer.music_url;
             $audio.addEventListener("playing", function(){
                     console.log("监听播放状态")
                     _this.$toast.clear();
                     //播放状态Doing
                     _this.bfFlag = 'font-size:0.7rem;color:#05bb05;display:none;';
                     _this.ztFlag = 'font-size:0.7rem;color:#05bb05;';
-                    _this.playerState = true;
+                    _this.childData.playerState = true;
+                    $(".music-player img").addClass('img-running').removeClass('img-paused');
             });
             $audio.addEventListener("pause", function(){ 
                     console.log("暂停状态")
                     //暂停状态Doing
                     _this.bfFlag = 'font-size:0.7rem;color:#05bb05;';
                     _this.ztFlag = 'font-size:0.7rem;color:#05bb05;display:none;';
-                    _this.playerState = false;
+                    _this.childData.playerState = false;
+                    $(".music-player img").addClass('img-paused').removeClass('img-running');
             });
             $audio.addEventListener("ended", function(){ 
                     _this.handleSong(4, true);
@@ -229,7 +476,6 @@
             };
             user.getWxConfig(data)
                 .then(res => {
-                    console.log("jssdk验证消息", res);
                     if (res.status != 200) {
                         this.$toast.fail('验证jssdk异常');
                         return;
@@ -240,7 +486,7 @@
                     }
                     let {appId, noncestr, signature, timestamp} = res.data.data;
                     wx.config({
-                        debug: true,
+                        debug: false,
                         appId: appId, // 必填，公众号的唯一标识
                         timestamp: timestamp, // 必填，生成签名的时间戳，精确到秒
                         nonceStr: noncestr, // 必填，生成签名的随机串
@@ -258,56 +504,74 @@
 
             },
             onChange (index) {
+                this.childData.active = index;
                 let audio = document.getElementById("myAudio");
                 switch(index) {
                     case 0:
-                        this.musicList = this.musicData.tj;
-                        if (!this.playerState && this.musicData.tj.length > 0) {
-                            this.indexPlayer = this.musicData.tj[0];
-                            audio.src = this.indexPlayer.music_url;
+                        this.childData.musicList = this.musicData.tj;
+                        if (!this.childData.playerState && this.musicData.tj.length > 0) {
+                            this.childData.indexPlayer = this.musicData.tj[0];
+                            this.childData.indexActive = 0;
+                            audio.src = this.childData.indexPlayer.music_url;
+                            setTimeout(function(){
+                                audio.pause();
+                            },100);
                             this.isFirst = false;
                         }
                         break;
                     case 1:
-                        this.musicList = this.musicData.phb;
-                        if (!this.playerState && this.musicData.phb.length > 0) {
-                            this.indexPlayer = this.musicData.phb[0];
-                            audio.src = this.indexPlayer.music_url;
+                        this.childData.musicList = this.musicData.phb;
+                        if (!this.childData.playerState && this.musicData.phb.length > 0) {
+                            this.childData.indexPlayer = this.musicData.phb[0];
+                            this.childData.indexActive = 1;
+                            audio.src = this.childData.indexPlayer.music_url;
+                            setTimeout(function(){
+                                audio.pause();
+                            },100);
                             this.isFirst = false;
                         }
                         break;
                     case 2:
-                        this.musicList = this.musicData.like;
-                        if (!this.playerState && this.musicData.like.length > 0) {
-                            this.indexPlayer = this.musicData.like[0];
-                            audio.src = this.indexPlayer.music_url;
+                        this.childData.musicList = this.musicData.like;
+                        if (!this.childData.playerState && this.musicData.like.length > 0) {
+                            this.childData.indexPlayer = this.musicData.like[0];
+                            this.childData.indexActive = 2;
+                            audio.src = this.childData.indexPlayer.music_url;
+                            setTimeout(function(){
+                                audio.pause();
+                            },100);
                             this.isFirst = false;
                         }
                         break;
                     default:
-                        this.musicList = this.musicData.tj;
-                        if (!this.playerState && this.musicData.tj.length > 0) {
-                            this.indexPlayer = this.musicData.tj[0];
-                            audio.src = this.indexPlayer.music_url;
+                        this.childData.musicList = this.musicData.tj;
+                        if (!this.childData.playerState && this.musicData.tj.length > 0) {
+                            this.childData.indexPlayer = this.musicData.tj[0];
+                            this.childData.indexActive = 0;
+                            audio.src = this.childData.indexPlayer.music_url;
+                            setTimeout(function(){
+                                audio.pause();
+                            },10);
                             this.isFirst = false;
                         }
                 }
             },
             handleSong(type, isFlag) {
                 let myAudio = document.getElementById("myAudio");
-                let xh = this.indexPlayer.xh;
+                let xh = this.childData.indexPlayer.xh;
                 let indexMusicList = this.getIndexMusicList() || [];
+                console.log("indexMusicList", indexMusicList)
                 let length = indexMusicList.length;
                 switch(type) {
                     case 1:
                         if (length > 1) {
                             if (xh == 0) {
-                                this.indexPlayer = this.musicList[length-1];
-                                myAudio.src = this.indexPlayer.music_url;
+                                this.childData.indexPlayer = indexMusicList[length-1];
+                                myAudio.src = this.childData.indexPlayer.music_url;
                                 this.playAudio(false);
                             } else {
-                                this.indexPlayer = this.musicList[xh-1];
-                                myAudio.src = this.indexPlayer.music_url;
+                                this.childData.indexPlayer = indexMusicList[xh-1];
+                                myAudio.src = this.childData.indexPlayer.music_url;
                                 this.playAudio(false);
                             }
                         }
@@ -322,13 +586,13 @@
                         if (length > 1) {
                             if (xh == length-1) {
                                 if (!isFlag) {
-                                    this.indexPlayer = this.musicList[0];
-                                    myAudio.src = this.indexPlayer.music_url;
+                                    this.childData.indexPlayer = indexMusicList[0];
+                                    myAudio.src = this.childData.indexPlayer.music_url;
                                     this.playAudio(false);
                                 }
                             } else {
-                                this.indexPlayer = this.musicList[xh+1];
-                                myAudio.src = this.indexPlayer.music_url;
+                                this.childData.indexPlayer = indexMusicList[xh+1];
+                                myAudio.src = this.childData.indexPlayer.music_url;
                                 this.playAudio(false);
                             }
                         }
@@ -368,21 +632,22 @@
                     duration: 0
                 })
                 if (flag) {
-                    this.isFirst = false;
                     if (this.isFirst) {
+                        this.isFirst = false;
                         myAudio.load();
                         myAudio.oncanplaythrough = function() {
                             myAudio.play();
                         }
                     } else {
+                        this.isFirst = false;
                         myAudio.play();
                     }
                     
                 } else {
+                    this.isFirst = false;
                     myAudio.load();
                     myAudio.oncanplaythrough = function() {
                         myAudio.play();
-                        this.isFirst = false;
                     }
                 }
             },
@@ -393,9 +658,15 @@
                 // this.ztFlag = 'font-size:0.7rem;color:#05bb05;display:none;';
             },
             getIndexMusicList() {
-                if (!this.playerState) {
-                    return this.musicList;
+                if (this.childData.indexActive == 0) {
+                    return this.musicData.tj;
+                } else if (this.childData.indexActive == 1) {
+                    return this.musicData.phb;
+                } else {
+                    return this.musicData.like;
                 }
+            },
+            getActiveMusicList() {
                 if (this.active == 0) {
                     return this.musicData.tj;
                 } else if (this.active == 1) {
@@ -403,6 +674,37 @@
                 } else {
                     return this.musicData.like;
                 }
+            },
+            operaPlalerFromChild(data) {
+                console.log("子组件传回来的data", data);
+                let state = this.childData.playerState;
+                if (this.active == this.childData.indexActive) {
+                    if (data == this.childData.indexPlayer.xh) {
+                        if (state) {
+                            this.pauseAudio();
+                        } else {
+                            this.playAudioBtn();
+                        }
+                        return;
+                    } else {
+                        this.childPlayer(true,data);
+                    }
+                } else {
+                    this.childPlayer(false,data);
+                }
+            },
+            childPlayer(flag, xh) {
+                let myAudio = document.getElementById("myAudio");
+                let activeMusicList = this.getActiveMusicList() || [];
+                let indexMusicList = this.getIndexMusicList() || [];
+                if (flag) {
+                    this.childData.indexPlayer = indexMusicList[xh];
+                } else {
+                    this.childData.indexActive = this.active;
+                    this.childData.indexPlayer = activeMusicList[xh];
+                }
+                myAudio.src = this.childData.indexPlayer.music_url;
+                this.playAudio(false);
             }
         },
     }
@@ -448,6 +750,23 @@
             background-color: #fff;
             text-align: center;
             font-size: 0;
+            .singer-img {
+                position: absolute;
+                left: 0.1rem;
+                bottom: 0.1rem;
+                width:1rem;
+                height:1rem;
+            }
+            .img-running {
+                animation: singerRotate 5s linear 0s infinite normal running;
+            }
+            .img-paused {
+                animation: singerRotate 5s linear 0s infinite normal paused;
+            }
+            @keyframes singerRotate {
+                from {transform: rotate(0deg);}
+                to {transform: rotate(360deg);}
+            }
             .specel-text {
                 text-align: left;
                 width: 3.75rem;

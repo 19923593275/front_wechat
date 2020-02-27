@@ -1,6 +1,6 @@
 <template>
     <div id="player" :style="pstyle">
-        <div v-for="(item,index) in this.musicList" :key="item.xh" :class="index < 2  ? 'item1' : 'item2'">
+        <div v-for="(item,index) in this.playerData.musicList" :key="item.xh" :class="index < 2  ? 'item1' : 'item2'" :id="`music${item.id}`" @click="slectMusic(item.id,item.xh)">
             <van-row gutter="2">
                 <van-col span="10">
                     <van-image width="1.791rem" height="1.791rem" fit="cover" :src="item.singer_img_url"/>
@@ -42,181 +42,14 @@
     export default {
         name: 'music-player',
         props: {
-            musicList: {
-                type: Array,
-                required: false
+            playerData: {
+                type: Object,
+                required: true
             }
         },
         data () {
             return {
-                pstyle: '',
-                // list: [
-                //     {
-                //         id: 1,
-                //         music_name: '烦恼歌',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:0
-                //     },
-                //     {
-                //         id: 2,
-                //         music_name: '吻别',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:1
-                //     },
-                //     {
-                //         id: 3,
-                //         music_name: '一千个伤心的理由',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:2
-                //     },
-                //     {
-                //         id: 1,
-                //         music_name: '烦恼歌',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:3
-                //     },
-                //     {
-                //         id: 2,
-                //         music_name: '吻别',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:4
-                //     },
-                //     {
-                //         id: 3,
-                //         music_name: '一千个伤心的理由',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:5
-                //     },
-                //     {
-                //         id: 1,
-                //         music_name: '烦恼歌',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:6
-                //     },
-                //     {
-                //         id: 2,
-                //         music_name: '吻别',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:7
-                //     },
-                //     {
-                //         id: 3,
-                //         music_name: '一千个伤心的理由',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:8
-                //     },
-                //     {
-                //         id: 1,
-                //         music_name: '烦恼歌',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:9
-                //     },
-                //     {
-                //         id: 2,
-                //         music_name: '吻别',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:10
-                //     },
-                //     {
-                //         id: 3,
-                //         music_name: '一千个伤心的理由',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:11
-                //     },
-                //     {
-                //         id: 1,
-                //         music_name: '烦恼歌',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/fng.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:12
-                //     },
-                //     {
-                //         id: 2,
-                //         music_name: '吻别',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/wenbie.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:13
-                //     },
-                //     {
-                //         id: 3,
-                //         music_name: '一千个伤心的理由',
-                //         music_url: '',
-                //         singer: '张学友',
-                //         singer_img_url: 'http://zxx9527.cn/wechat/static/img/yqgsxdly.jpg',
-                //         is_chosen: 1,
-                //         like_sum: 2,
-                //         comment_sum: 12,
-                //         xh:14
-                //     }
-                // ]
+                pstyle: ''
             }
         },
         created() {
@@ -226,8 +59,31 @@
             this.pstyle = height1 - height2 > 0 ? `height:${height1}px` : '';
         },
         mounted() {
-            console.log("子组件的数据 ======== ", this.musicList)
+            console.log("子组件的数据 ======== ", this.playerData)
             window.addEventListener("resize", this.renderResize, false);
+            let {active, indexActive, playerState, indexPlayer} = this.playerData;
+            if (active == indexActive) {
+                $('#music' + indexPlayer.id).addClass('select-music').siblings('div').removeClass('select-music');
+            }else {
+                $('#music' + indexPlayer.id).removeClass('select-music').siblings('div').removeClass('select-music');
+            }
+        },
+        watch: {
+            playerData: {
+                handler(newValue, oldValue) {
+                    console.log(newValue);
+                    setTimeout(()=> {
+                        let {active, indexActive, playerState, indexPlayer} = newValue;
+                        if (active == indexActive) {
+                            $('#music' + indexPlayer.id).addClass('select-music').siblings('div').removeClass('select-music');
+                        }else {
+                            $('#music' + indexPlayer.id).removeClass('select-music').siblings('div').removeClass('select-music');
+                        }
+                    },100);
+                },
+                immediate: true,
+                deep: true
+            }
         },
         beforeDestroy() {
             window.removeEventListener("resize", this.renderResize, false);
@@ -238,6 +94,11 @@
                 let height1 = document.documentElement.clientHeight - (cl * 4.23333);
                 let height2 = 2.191 * cl;
                 this.pstyle = height1 - height2 > 0 ? `height:${height1}px` : '';
+            },
+            slectMusic(musicId, musicXh) {
+                console.log("点击播放 ===== ", musicId, musicXh);
+                $('#music' + musicId).addClass('select-music').siblings('div').removeClass('select-music');
+                this.$emit("listenChildPlayler", musicXh)
             }
         },
     }
@@ -266,6 +127,13 @@
             font-size: 0;
             box-shadow: 0px 0px 3px;
             border-radius: 2px;
+        }
+        .select-music {
+            animation: musicBorder 2s linear 0s infinite alternate;
+        }
+        @keyframes musicBorder {
+            from {box-shadow: 0px 0px 4px rgb(253, 187, 187);}
+            to {box-shadow: 0px 0px 8px red;}
         }
         .author-div {
             width: 100%;
