@@ -4,7 +4,9 @@
 
 //user模块的接口
 import user from "./user";
+import about from "./about"
 
 export default {
-  user
+  user,
+  about
 };
