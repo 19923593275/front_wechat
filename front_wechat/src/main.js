@@ -7,6 +7,7 @@ import '@/permission'
 import wechatAuth from './plugins/wechatAuth'
 import 'amfe-flexible/index'
 import '@/assets/css/iconfont.css'
+import '@/assets/css/myicon.css'
 
 Vue.use(wechatAuth, {
   appid: process.env.VUE_APP_WECHAT_APPID
