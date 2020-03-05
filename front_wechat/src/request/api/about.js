@@ -15,6 +15,14 @@ const about = {
   cancelEnjoyMusic(params) {
     console.log("================about add-enjoy-music============")
     return axios.post('/about/cancel-enjoy-music', params);
+  },
+  addMusicComment(params) {
+    console.log("================about add-music-comment============")
+    return axios.post('/about/add-musicComment', params);
+  },
+  findPageQueryMusicComment(params) {
+    console.log("================about find-page-query-music-comment============")
+    return axios.post('/about/findPageQuery-musicComment', params);
   }
 };
 

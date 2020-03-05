@@ -54,8 +54,7 @@ instance.interceptors.response.use(
     // res => (res.status === 200 ? Promise.resolve(res) : Promise.reject(res)),
     //请求失败
     error => {
-      const { response } = error;
-      console.log(response)
+      console.log(error)
     //   if (response) {
     //     errHandle(response.status, response.data.message);
     //   } else {
