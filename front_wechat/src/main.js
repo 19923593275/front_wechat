@@ -17,9 +17,9 @@ Vue.config.productionTip = false
 
 
 import { Button, Tabbar, TabbarItem, Icon, Swipe, SwipeItem, Lazyload, Toast, Col, Row, Image, Form, Field, Cell, CellGroup,
-Notify, Overlay} from 'vant';
+Notify, Overlay, Dialog, PullRefresh, List} from 'vant';
 Vue.use(Button).use(Tabbar).use(TabbarItem).use(Icon).use(Swipe).use(SwipeItem).use(Lazyload).use(Toast).use(Col).use(Row).use(Image)
-.use(Form).use(Field).use(Cell).use(CellGroup).use(Notify).use(Overlay);
+.use(Form).use(Field).use(Cell).use(CellGroup).use(Notify).use(Overlay).use(Dialog).use(List).use(PullRefresh);
 
 new Vue({
   router,
