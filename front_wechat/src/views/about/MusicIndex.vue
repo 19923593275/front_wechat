@@ -1,5 +1,8 @@
 <template>
     <div id="music-index">
+        <div id="comment-panel" class="com-control com-style">
+            <music-comment v-bind:comMusic="this.commentMusic" v-on:lisenCloseRegion="closeComment(arguments)"></music-comment>
+        </div>
         <div class="m-user">
             <div class="user-flex-left">
                 <van-image style="width:1.5rem;height:1.5rem;margin-right:0.1rem;" round :src="this.userInfo.head_img"></van-image>
@@ -33,20 +36,6 @@
                     <i :style="btnStyle" class="iconfont icon-xiayiqu01" @click="handleSong(4)"></i>
                 </p>
             </div>
-            <!-- <van-row gutter="4">
-                <van-col span="6">
-
-                </van-col>
-                <van-col span="6">
-                    
-                </van-col>
-                <van-col span="6">
-
-                </van-col>
-                <van-col span="6">
-
-                </van-col>
-            </van-row> -->
         </div>
         <van-tabbar v-model="active" @change="onChange">
             <van-tabbar-item :icon="active == 0 ? 'fire' : 'fire-o'">推荐</van-tabbar-item>
@@ -68,10 +57,12 @@
     import phb1 from '@/assets/img/music/paihangbang-o.png'
     import phb2 from '@/assets/img/music/paihangbang.png'
     import MusicPlayer from '@/components/MusicPlayer'
+    import MusicComment from '@/components/MusicComment'
     export default {
         name: 'music-index',
         components: {
-            'music-player': MusicPlayer
+            'music-player': MusicPlayer,
+            'music-comment': MusicComment
         },
         data() {
             return {
@@ -108,7 +99,20 @@
                 btnStyle: 'font-size:0.7rem;color:#05bb05;',
                 bfFlag: 'font-size:0.7rem;color:#05bb05;',
                 ztFlag: 'font-size:0.7rem;color:#05bb05;display:none;',
-                isFirst: true
+                isFirst: true,
+                commentMusic: {
+                    music_id: '',
+                    music_name: '',
+                    music_url: '',
+                    music_lyric_url: '',
+                    singer: '',
+                    singer_img_url: '',
+                    is_chosen: '',
+                    like_sum: '',
+                    comment_sum: '',
+                    myEnjoy: false,
+                    xh:0
+                }
             }
         },
         created() {
@@ -229,7 +233,7 @@
                             },100);
                             
                         }
-                        this.isFirst = false;
+                        this.isFirst = true;
                         break;
                     case 2:
                         this.childData.musicList = this.musicData.like;
@@ -240,9 +244,8 @@
                             setTimeout(function(){
                                 audio.pause();
                             },100);
-                            
                         }
-                        this.isFirst = false;
+                        this.isFirst = true;
                         break;
                     default:
                         this.childData.musicList = this.musicData.tj;
@@ -253,7 +256,7 @@
                             setTimeout(function(){
                                 audio.pause();
                             },100);
-                            this.isFirst = false;
+                            this.isFirst = true;
                         }
                 }
             },
@@ -442,6 +445,11 @@
                                 this.$toast.fail('添加喜欢音乐异常');
                             })
                         break;
+                    case 4://评论
+                        console.log("开启评论==============")
+                        this.commentMusic = music;
+                        this.openComment();
+                        break;
                     default:
                         console.log("操作类型错误")
                 }
@@ -525,6 +533,17 @@
                     }
                 }
                 return xh;
+            },
+            openComment() {
+                $("#comment-panel").removeClass("com-control").removeClass('com-display').addClass('com-block');
+                $("body").css("position","fixed");
+            },
+            closeComment(commentData) {
+                $("#comment-panel").addClass("com-display").removeClass('com-block');
+                $("body").css("position","relative");
+                setTimeout(function(){
+                    $("#comment-panel").addClass('com-control');
+                },300);
             }
         },
     }
@@ -532,6 +551,33 @@
 
 <style lang="scss">
     #music-index {
+        .com-control {
+            display: none;
+        }
+        .com-style {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: 9999;
+            background-color: rgba(0,0,0,.7);
+            bottom: 0;
+        }
+        .com-block {
+            animation: block-animation 0.3s linear 0s 1 normal running;
+        }
+        @keyframes block-animation{
+            0%{background-color:rgba(0,0,0,.3);height: 30%;}
+            50%{background-color:rgba(0,0,0,.6);height: 60%;}
+            100%{background-color:rgba(0,0,0,.9);height: 100%;}
+        }
+        .com-display {
+            animation: display-animation 0.3s linear 0s 1 normal running;
+        }
+        @keyframes display-animation{
+            0%{background-color:rgba(0,0,0,1);opacity:1;height: 100%;}
+            50%{background-color:rgba(0,0,0,.6);opacity:.6;height: 60%;}
+            100%{background-color:rgba(0,0,0,0);opacity:0;height: 0%;display: none;}
+        }
         .m-user {
             padding: 0.2rem 0;
             background: #fff;

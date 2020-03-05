@@ -20,7 +20,7 @@
                                 </van-col>
                                 <van-col span="6">
                                     <!-- <i class="iconfont icon-pinglun"></i> -->
-                                    <van-icon style="margin:0;" class-prefix="my-icon" name="pinglun" :info="item.comment_sum" />
+                                    <van-icon style="margin:0;" class-prefix="my-icon" name="pinglun" :info="item.comment_sum" @click="slectMusic($event, 4, item)"/>
                                 </van-col>
                                 <van-col span="4">
 
@@ -98,7 +98,7 @@
                 let cl = document.documentElement.clientWidth / 10;
                 let height1 = document.documentElement.clientHeight - (cl * 4.23333);
                 let height2 = 2.191 * cl;
-                this.pstyle = height1 - height2 > 0 ? `height:${height1}px` : '';
+                this.pstyle = height1 - height2 > 0 ? `min-height:${height1}px` : '';
             },
             slectMusic(e, type, music) {
                 if (e && e.stopPropagation) {
@@ -120,7 +120,7 @@
 
 <style lang="scss" scoped>
     #player {
-        overflow: scroll;
+        overflow: auto;
         padding: 0.2rem 0;
         .music-none {
             font-size: 0.35rem;
