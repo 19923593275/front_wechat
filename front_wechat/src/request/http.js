@@ -19,6 +19,7 @@ const tip = msg => {
 //创建axios实例
 var instance = axios.create({ timeout: 3000});
 //设置post请求头
+// instance.defaults.headers["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
 instance.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
 instance.defaults.baseURL = '/api'
 
