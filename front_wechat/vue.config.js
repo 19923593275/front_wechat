@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 module.exports = {
   devServer: {
+      port:process.env.BASE_PORT,
       proxy: {
           '/api': {
               target: process.env.VUE_APP_BASE_API,

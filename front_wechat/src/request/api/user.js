@@ -16,6 +16,13 @@ const user = {
   //用户登陆
   userLogin(params) {
     console.log("================user login============")
+    if (process.env.VUE_APP_ENV == 'dev') {
+      return axios.post('/user/login', params, {
+        headers: {
+          'isTest': 'okmaY1U76nDTg3r2r16ffRym4c2M',
+        }
+      });
+    }
     return axios.post('/user/login', params);
   },
   //发送验证码
