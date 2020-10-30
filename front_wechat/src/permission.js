@@ -9,32 +9,38 @@ import {
 
 router.beforeEach((to, from, next) => {
   if (process.env.VUE_APP_ENV == 'dev') {
-      store
-            .dispatch('user/loginWechatAuth', 12)
-            .then(res => {
-              // 成功设置已登录状态
-              console.log("用户登陆返回信息",res);
-              store.dispatch('user/setLoginStatus', 2);
-              if (res.status == 200) {
-                const data = res.data;
-                if (data.stateCode == 0) {
-                  store.dispatch('user/setUserInfo', data.data);
-                  saveUserInfo(data.data);
-                } else {
-                  store.dispatch('user/setUserInfo', {});
-                  removeUserInfo();
-                }
-              }
-              next()
-            })
-            .catch(error => {
-              console.log("error ===== ",error)
-              // 失败，设置状态未登录，刷新页面
-              store.dispatch('user/setLoginStatus', 0)
-              // location.reload()
-              next()
-            })
+    const loginStatus = Number(store.getters.loginStatus)
+    document.title = to.meta.title;
+    if (loginStatus === 2) {
+      next();
     } else {
+      store
+      .dispatch('user/loginWechatAuth', 12)
+        .then(res => {
+        // 成功设置已登录状态
+        console.log("用户登陆返回信息",res);
+        store.dispatch('user/setLoginStatus', 2);
+        if (res.status == 200) {
+          const data = res.data;
+          if (data.stateCode == 0) {
+            store.dispatch('user/setUserInfo', data.data);
+            saveUserInfo(data.data);
+          } else {
+            store.dispatch('user/setUserInfo', {});
+            removeUserInfo();
+          }
+        }
+        next()
+      })
+      .catch(error => {
+        console.log("error ===== ",error)
+        // 失败，设置状态未登录，刷新页面
+        store.dispatch('user/setLoginStatus', 0)
+        // location.reload()
+        next()
+      })
+    }
+  } else {
       const loginStatus = Number(store.getters.loginStatus)
       document.title = to.meta.title; 
       if (loginStatus === 0) {
