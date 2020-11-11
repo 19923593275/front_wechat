@@ -5,6 +5,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Toast } from 'vant'
+import router from '@/router'
+import store from '@/store'
 
 /**
  * 提示函数
@@ -50,7 +52,14 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     //请求成功
     res => {
-      console.log("success");
+      console.log(res)
+      if (res) {
+        switch(res.data.stateCode) {
+          case 10003:
+            store.dispatch('user/setLoginStatus', 0);
+            router.replace("/");
+        }
+      }
       return res;
     },
     // res => (res.status === 200 ? Promise.resolve(res) : Promise.reject(res)),

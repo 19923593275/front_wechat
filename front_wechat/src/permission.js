@@ -6,8 +6,10 @@ import {
   saveUserInfo,
   removeUserInfo
 } from './utils/cache'
+import { Form } from 'vant'
 
 router.beforeEach((to, from, next) => {
+  console.log("from", from)
   if (process.env.VUE_APP_ENV == 'dev') {
     const loginStatus = Number(store.getters.loginStatus)
     document.title = to.meta.title;
@@ -30,14 +32,19 @@ router.beforeEach((to, from, next) => {
             removeUserInfo();
           }
         }
-        next()
+        if (from.name != 'home') {
+          console.log("=========bu home")
+          next({path: '/music-index'});
+        } else {
+          next();
+        }
       })
       .catch(error => {
         console.log("error ===== ",error)
         // 失败，设置状态未登录，刷新页面
         store.dispatch('user/setLoginStatus', 0)
         // location.reload()
-        next()
+        next();
       })
     }
   } else {

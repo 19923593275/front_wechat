@@ -75,6 +75,14 @@ const routes = [
       title: '我的音乐'
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/about/MusicIndex.vue')
+  },
+  {
+    path: '/leave-message',
+    name: 'leave-message',
+    meta:{
+      title: '我的留言'
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/about/MusicIndex.vue')
   }
 ]
 

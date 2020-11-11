@@ -24,7 +24,7 @@
           <card v-bind:card="card1" @click.native="jumpUrl('music-index')"></card>
         </van-col>
         <van-col span="6">
-          <card v-bind:card="card2"></card>
+          <card v-bind:card="card2" @click.native="jumpUrl('music-index')"></card>
         </van-col>
         <van-col span="6">
           <card v-bind:card="card3"></card>
@@ -95,7 +95,7 @@ export default {
       },
       card2: {
         isZdy: false,
-        name: '评论',
+        name: '留言',
         imgStyle: '',
         imgUrl: '',
         class: 'icon-pinglun',
